@@ -202,8 +202,11 @@ class Client extends EventEmitter {
                     if (this.options.webVersionCache.type === 'local' && this.currentIndexHtml) {
                         const { type: webCacheType, ...webCacheOptions } = this.options.webVersionCache;
                         const webCache = WebCacheFactory.createWebCache(webCacheType, webCacheOptions);
-            
-                        await webCache.persist(this.currentIndexHtml, version);
+                        try {
+                            await webCache.persist(this.currentIndexHtml, version);
+                        } catch(err) {
+                            console.log(err.message);
+                        }
                     }
 
                     if (isCometOrAbove) {
